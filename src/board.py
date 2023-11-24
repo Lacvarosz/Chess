@@ -17,22 +17,19 @@ class Board():
         del self.sides[self[pos].color][pos]
     
     def __str__(self) -> str:
-        ret = "+--" + "---"*8 + "-+\n|  "
-        for j in list("abcdefgh"):
-            ret += f" {j} "
-        ret += " |\n"
+        ret = "+" + "---+"*8 + "\n"
         for i in range(8):
-            ret += "|" + str(8-i) + " "
+            ret += "|"
             for j in range(8):
                 if not self.board[i][j] is None:
-                    ret += " " + str(self.board[i][j]) + " "
+                    ret += " " + str(self.board[i][j]) + " |"
                 else:
-                    ret += " o "
-            ret += str(8-i) + "|\n"
-        ret += "|  "
+                    ret += "   |"
+            ret += " " + str(8-i) + "\n" + "+" + "---+"*8 + "\n"
+        ret += " "
         for j in list("abcdefgh"):
-            ret += f" {j} "
-        return(ret + " |\n+--" + "---"*8 + "-+")
+            ret += f" {j}  "
+        return(ret)
     
     def __iter__(self) -> Self:
         self.iter = iter(self.sides[SideColor.WHITE] + self.sides[SideColor.BLACK])
@@ -116,16 +113,11 @@ class Board():
         #capture
         if self[t] is not None:
             print("Ütés")
-            if isinstance(figure, Pawn) and w.x == t.x:
-                print("A gyalog nem tud előre ütni")
-                return False
-            # if figure.can_takes(t):
-            #     print("Tud ütni")
-            #     return True
-            # return False
-        if isinstance(figure, Pawn) and abs(w.x - t.x) == abs(w.y - t.y):
-            print("A gyalog csak ütni tud átlósan")
-            return False
+            if isinstance(figure, Pawn):
+                return figure.can_takes(t)
+        # elif isinstance(figure, Pawn) and abs(w.x - t.x) == abs(w.y - t.y):
+        #     print("A gyalog csak ütni tud átlósan")
+        #     return False
         #castling
         if isinstance(figure, King) and abs(t.x - w.x) == 2 and figure.didnt_move:
             if t.x > w.x:
@@ -195,7 +187,6 @@ class Board():
             
         if figure[t]:
             print("egyszerű lépés")
-            self.refresh_map()
             return True
         print("Érvénytelen lépés")
         return False

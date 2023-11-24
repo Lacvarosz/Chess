@@ -55,14 +55,14 @@ class Position():
     @staticmethod
     def str_to_x(s :str) -> int:
         c = "abcdefgh"
-        if len(s) != 1 or s[0] not in c:
+        if len(s) != 1 or s not in c:
             raise IllegalStringformat("A pos string must be a letter 'a-h' and a digit '1-8'")
         return c.find(s)
     
     @staticmethod
     def str_to_y(s :str) -> int:
         r = "12345678"
-        if len(s) != 2 or s[1] not in r:
+        if len(s) != 1 or s not in r:
             raise IllegalStringformat("A pos string must be a letter 'a-h' and a digit '1-8'")
         return 8 - int(s)
             
