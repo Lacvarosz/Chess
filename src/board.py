@@ -25,7 +25,7 @@ class Board():
             ret += "|" + str(8-i) + " "
             for j in range(8):
                 if not self.board[i][j] is None:
-                    ret += str(self.board[i][j]) + " "
+                    ret += " " + str(self.board[i][j]) + " "
                 else:
                     ret += " o "
             ret += str(8-i) + "|\n"
@@ -94,6 +94,56 @@ class Board():
             for f in self.sides[k]:
                 self[f.pos] = f
     
+    def can_step(self, w :Position, t :Position, color :SideColor) -> bool:
+        if self[w] is None:
+            print("Ez nem bábu")
+            return False
+        figure = self[w]
+        #Figure is owned by enemy
+        if figure.color != color:
+            return False
+        #You can't step the place of your other figure
+        if self[t] is not None and self[t].color == figure.color:
+            print("ki akarom ütni a saját bábumat")
+            return False
+        #linear movement
+        if w + t and not self.line_is_clear(w, t):
+            print("Vonalban lépek, de nem léphetek")
+            return False
+        if w * t and not self.diag_is_clear(w, t):
+            print("Átlóban lépek, de nem léphetek")
+            return False
+        #capture
+        if self[t] is not None:
+            print("Ütés")
+            if isinstance(figure, Pawn) and w.x == t.x:
+                print("A gyalog nem tud előre ütni")
+                return False
+            # if figure.can_takes(t):
+            #     print("Tud ütni")
+            #     return True
+            # return False
+        if isinstance(figure, Pawn) and abs(w.x - t.x) == abs(w.y - t.y):
+            print("A gyalog csak ütni tud átlósan")
+            return False
+        #castling
+        if isinstance(figure, King) and abs(t.x - w.x) == 2 and figure.didnt_move:
+            if t.x > w.x:
+                if isinstance(self[Position(7, t.y)], Rook) and self[Position(7, t.y)].didnt_move and self.line_is_clear(w, Position(7, t.y)):
+                    if figure.can_castling(t):
+                        return True
+                    
+            elif t.x < w.x:
+                if isinstance(self[Position(0, t.y)], Rook) and self[Position(0, t.y)].didnt_move and self.line_is_clear(w, Position(0, t.y)):
+                    if figure.can_castling(t):
+                        return True
+            return False
+        #Pawn dubble step
+        if isinstance(figure, Pawn) and figure.can_base_step(t):
+            return True
+        print("Egyszerü lépés")
+        return figure.can_step(t)
+    
     def step(self, w :Position, t :Position, color :SideColor) -> bool:
         if self[w] is None:
             print("Ez nem bábu")
@@ -143,8 +193,13 @@ class Board():
                         return True
             return False        
             
-        print("egyszerű lépés")
-        return figure[t]
+        if figure[t]:
+            print("egyszerű lépés")
+            self.refresh_map()
+            return True
+        print("Érvénytelen lépés")
+        return False
+        
                 
             
 

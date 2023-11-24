@@ -33,6 +33,13 @@ class Side():
             if self.figures[i - k].pos == pos:
                 del self.figures[i - k]
                 k += 1
+
+    def get_by_type(self, f :type) -> list[Figure]:
+        ret = []
+        for i in self:
+            if isinstance(i, f):
+                ret.append(i)
+        return(ret)
         
     def starting_stand(self):
         if self.color == SideColor.WHITE:

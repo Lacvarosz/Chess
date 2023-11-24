@@ -33,7 +33,7 @@ class Pawn(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Pa{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}P{bcolors.ENDC}")
     
     def can_step(self, pos: Position) -> bool:
         if self.color == SideColor.WHITE:
@@ -78,7 +78,7 @@ class King(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Ki{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}K{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
         return(max(abs(self.pos.x - pos.x), (self.pos.y - pos.y)) == 1)
@@ -106,7 +106,7 @@ class Queen(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Qu{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Q{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
         return((pos.x == self.pos.x or pos.y == self.pos.y) or (abs(self.pos.x - pos.x) == abs(self.pos.y - pos.y)))
@@ -124,7 +124,7 @@ class Rook(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Ro{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}R{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
         return(pos.x == self.pos.x or pos.y == self.pos.y)
@@ -144,7 +144,7 @@ class Bishop(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Bi{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}B{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
         return(abs(self.pos.x - pos.x) == abs(self.pos.y - pos.y))
@@ -160,7 +160,7 @@ class Knight(Figure):
         return False
     
     def __str__(self) -> str:
-        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}Kn{bcolors.ENDC}")
+        return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}N{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
         return ((abs(self.pos.x - pos.x) == 2 and abs(self.pos.y - pos.y) == 1) or (abs(self.pos.x - pos.x) == 1 and abs(self.pos.y - pos.y) == 2))

@@ -15,11 +15,17 @@ class bcolors():
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+    
+class IllegalPosition(Exception):
+    pass
+
+class IllegalStringformat(Exception):
+    pass
 
 class Position():
     def __init__(self, x :int, y :int) -> None:
         if x < 0 or y < 0 or x > 7 or y > 7:
-            raise 
+            raise IllegalPosition
         self.x = x
         self.y = y
     
@@ -37,3 +43,26 @@ class Position():
     
     def __eq__(self, __value: Self) -> bool:
         return (self.x == __value.x and self.y == __value.y)
+    
+    @staticmethod
+    def str_to_pos(s :str) -> Self:
+        c = "abcdefgh"
+        r = "12345678"
+        if len(s) != 2 or s[0] not in c or s[1] not in r:
+            raise IllegalStringformat("A pos string must be a letter 'a-h' and a digit '1-8'")
+        return Position(c.find(s[0]), 8 - int(s[1]))
+    
+    @staticmethod
+    def str_to_x(s :str) -> int:
+        c = "abcdefgh"
+        if len(s) != 1 or s[0] not in c:
+            raise IllegalStringformat("A pos string must be a letter 'a-h' and a digit '1-8'")
+        return c.find(s)
+    
+    @staticmethod
+    def str_to_y(s :str) -> int:
+        r = "12345678"
+        if len(s) != 2 or s[1] not in r:
+            raise IllegalStringformat("A pos string must be a letter 'a-h' and a digit '1-8'")
+        return 8 - int(s)
+            
