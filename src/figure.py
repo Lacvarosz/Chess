@@ -81,7 +81,7 @@ class King(Figure):
         return (f"{bcolors.OKGREEN if self.color == SideColor.WHITE else bcolors.OKBLUE}K{bcolors.ENDC}")
     
     def can_step(self, pos :Position) -> bool:
-        return(max(abs(self.pos.x - pos.x), (self.pos.y - pos.y)) == 1)
+        return(max(abs(self.pos.x - pos.x), abs(self.pos.y - pos.y)) == 1)
         
     
     def step(self, pos :Position) -> None:

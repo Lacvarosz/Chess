@@ -93,8 +93,9 @@ while a:
             print("A királyod sakkban lenne")
             b[t].set_pos(w)
             b.refresh_map()
+        else:
+            step_counter += 1
         
-        step_counter += 1
         print(b)
     else:
         print("Hibás bemenet")
