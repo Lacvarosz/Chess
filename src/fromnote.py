@@ -87,9 +87,16 @@ while a:
             l = False
     if l and w is not None and b.can_step(w,t,side):
         b.step(w, t, side)
-        step_counter += 1
         b.refresh_map()
+        
+        if b.is_check(side):
+            print("A királyod sakkban lenne")
+            b[t].set_pos(w)
+            b.refresh_map()
+        
+        step_counter += 1
         print(b)
     else:
         print("Hibás bemenet")
+    
     a = input()

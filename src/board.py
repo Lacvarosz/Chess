@@ -190,7 +190,14 @@ class Board():
             return True
         print("Érvénytelen lépés")
         return False
-        
+    
+    def is_check(self, side :SideColor) -> bool:
+        op_side = SideColor.WHITE if side == SideColor.BLACK else SideColor.BLACK
+        pos = self.sides[side].get_by_type(King)[0].pos
+        for i in self.sides[op_side]:
+            if self.can_step(i.pos, pos, op_side):
+                return True
+        return False
                 
             
 
