@@ -83,6 +83,14 @@ class Board():
                 if self[Position(p1.x - i, p1.y + i)] is not None:
                     return False
         return True
+
+    def castling_is_clear(self, side :SideColor, inner_fields :list[Position]) -> bool:
+        for i in inner_fields:
+            for f in self.sides[side]:
+                if not self.can_step(f.pos, i, side):
+                    print("A vonalban ütés lenne", f, f.pos)
+                    return False
+        return True
     
     def refresh_map(self):
         self.board = [[None]*8 for i in range(8)]
@@ -121,12 +129,12 @@ class Board():
         #castling
         if isinstance(figure, King) and abs(t.x - w.x) == 2 and figure.didnt_move:
             if t.x > w.x:
-                if isinstance(self[Position(7, t.y)], Rook) and self[Position(7, t.y)].didnt_move and self.line_is_clear(w, Position(7, t.y)):
+                if isinstance(self[Position(7, t.y)], Rook) and self[Position(7, t.y)].didnt_move and self.line_is_clear(w, Position(7, t.y)) and self.castling_is_clear(SideColor.BLACK if figure.color == SideColor.WHITE else SideColor.WHITE, [Position(5, t.y), Position(6, t.y)]):
                     if figure.can_castling(t):
                         return True
                     
             elif t.x < w.x:
-                if isinstance(self[Position(0, t.y)], Rook) and self[Position(0, t.y)].didnt_move and self.line_is_clear(w, Position(0, t.y)):
+                if isinstance(self[Position(0, t.y)], Rook) and self[Position(0, t.y)].didnt_move and self.line_is_clear(w, Position(0, t.y)) and self.castling_is_clear(SideColor.BLACK if figure.color == SideColor.WHITE else SideColor.WHITE, [Position(3, t.y), Position(2, t.y)], Position(1, t.y)):
                     if figure.can_castling(t):
                         return True
             return False
@@ -171,14 +179,14 @@ class Board():
         #castling
         if isinstance(figure, King) and abs(t.x - w.x) == 2 and figure.didnt_move:
             if t.x > w.x:
-                if isinstance(self[Position(7, t.y)], Rook) and self[Position(7, t.y)].didnt_move and self.line_is_clear(w, Position(7, t.y)):
+                if isinstance(self[Position(7, t.y)], Rook) and self[Position(7, t.y)].didnt_move and self.line_is_clear(w, Position(7, t.y)) and self.castling_is_clear(SideColor.BLACK if figure.color == SideColor.WHITE else SideColor.WHITE, [Position(5, t.y), Position(6, t.y)]):
                     if figure.can_castling(t):
                         figure.castling(t)
                         self[Position(7, t.y)].castling(Position(t.x-1, t.y))
                         return True
                     
             elif t.x < w.x:
-                if isinstance(self[Position(0, t.y)], Rook) and self[Position(0, t.y)].didnt_move and self.line_is_clear(w, Position(0, t.y)):
+                if isinstance(self[Position(0, t.y)], Rook) and self[Position(0, t.y)].didnt_move and self.line_is_clear(w, Position(0, t.y)) and self.castling_is_clear(SideColor.BLACK if figure.color == SideColor.WHITE else SideColor.WHITE, [Position(3, t.y), Position(2, t.y), Position(1, t.y)]):
                     if figure.can_castling(t):
                         figure.castling(t)
                         self[Position(0, t.y)].castling(Position(t.x+1, t.y))
